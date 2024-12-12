@@ -29,12 +29,25 @@ class CombinedTest {
         assertEquals(Arrays.asList(90.0, 85.0, 92.0), course.getGrades());
     }
 
+
+    @Test
+    void testAddGradeToExistingCourse() {
+        GradeTracker tracker = new GradeTracker();
+        tracker.addCourse("Math");
+        // Now add a grade to the existing "Math" course
+        tracker.addGrade("Math", 95.0, 1);
+        Course course = tracker.getCourse("Math");
+        // Verify that the grade was indeed added
+        assertEquals(1, course.getNumberOfGrades());
+        assertEquals(95.0, course.getGrades().get(0), 0.01);
+    }
+
+
     @Test
     void testCalculateCurrentGradeSimple() {
         Course course = new Course("Math");
         course.addGrade(90.0, 1);
         course.addGrade(80.0, 2);
-        // Weighted avg = (90*1 + 80*2)/3 =250/3=83.33
         assertEquals(83.33, course.calculateCurrentGrade(), 0.01);
     }
 
@@ -45,10 +58,17 @@ class CombinedTest {
     }
 
     @Test
+    void testCalculateCurrentGradeSingleGrade() {
+        // To ensure full coverage of loop scenarios (just one iteration)
+        Course course = new Course("Math");
+        course.addGrade(75.0, 1);
+        assertEquals(75.0, course.calculateCurrentGrade(), 0.01);
+    }
+
+    @Test
     void testCalculateCurrentGradeWithZeroWeight() {
         Course course = new Course("Math");
         course.addGrade(90.0, 0);
-        // totalWeights=0 => currentGrade=0
         assertEquals(0, course.calculateCurrentGrade());
     }
 
@@ -63,7 +83,6 @@ class CombinedTest {
     @Test
     void testCalculateCurrentGradeMixedPositiveAndNegativeWeights() {
         Course course = new Course("Math");
-        // totalWeighted=(100*2)+(50*1)=250; totalWeights=3 =>83.33
         course.addGrade(100.0, 2);
         course.addGrade(50.0, 1);
         assertEquals(83.33, course.calculateCurrentGrade(), 0.01);
@@ -72,7 +91,6 @@ class CombinedTest {
     @Test
     void testCalculateCurrentGradeNegativeWeights() {
         Course course = new Course("Math");
-        // (80*-1)+(100*2)= -80+200=120; totalWeights=-1+2=1 =>120
         course.addGrade(80.0, -1);
         course.addGrade(100.0, 2);
         assertEquals(120.0, course.calculateCurrentGrade(), 0.01);
@@ -114,7 +132,6 @@ class CombinedTest {
         course.addGrade(70.0, 1);
         course.addGrade(60.0, 1);
         course.addGrade(50.0, 1);
-        // 110.0
         assertEquals(110.0, course.calculateRequiredFinalScoreForA(), 0.01);
     }
 
@@ -132,7 +149,6 @@ class CombinedTest {
         Course course = new Course("Math");
         for (int i = 0; i < 5; i++)
             course.addGrade(95.0, 1);
-        // required=85.0
         assertEquals(85.0, course.calculateRequiredFinalScoreForA(), 0.01);
     }
 
@@ -141,7 +157,6 @@ class CombinedTest {
         Course course = new Course("Physics");
         for (int i = 0; i < 5; i++)
             course.addGrade(90.0, 1);
-        // required=90.0
         assertEquals(90.0, course.calculateRequiredFinalScoreForA(), 0.01);
     }
 
@@ -150,7 +165,6 @@ class CombinedTest {
         Course course = new Course("Literature");
         for (int i = 0; i < 5; i++)
             course.addGrade(92.0, 1);
-        // required=88.0
         assertEquals(88.0, course.calculateRequiredFinalScoreForA(), 0.01);
     }
 
@@ -159,7 +173,6 @@ class CombinedTest {
         Course course = new Course("Biology");
         for (int i = 0; i < 5; i++)
             course.addGrade(85.0, 1);
-        // required=95.0
         assertEquals(95.0, course.calculateRequiredFinalScoreForA(), 0.01);
     }
 
@@ -182,7 +195,6 @@ class CombinedTest {
     @Test
     void testCalculateRequiredFinalScoreForAExactlyNoEffortNeeded() {
         Course course = new Course("Sociology");
-        // Each=180 => total=900
         for (int i = 0; i < 5; i++)
             course.addGrade(180.0, 1);
         assertEquals(0.0, course.calculateRequiredFinalScoreForA(), 0.01);
@@ -286,7 +298,6 @@ class CombinedTest {
         Course course = new Course("Math");
         course.addGrade(-10.0, 1);
         course.addGrade(100.0, -1);
-        // totalWeights=0 => currentGrade=0
         assertEquals(0.0, course.calculateCurrentGrade(), 0.01);
     }
 
@@ -297,6 +308,13 @@ class CombinedTest {
         GradeTracker tracker = new GradeTracker();
         tracker.addCourse("Math");
         assertTrue(tracker.courseExists("Math"));
+    }
+
+    @Test
+    void testCourseDoesNotExist() {
+        GradeTracker tracker = new GradeTracker();
+        tracker.addCourse("Math");
+        assertFalse(tracker.courseExists("Science"));
     }
 
     @Test
@@ -329,14 +347,30 @@ class CombinedTest {
         List<Double> grades = Arrays.asList(90.0, 80.0, 70.0);
         List<Integer> weights = Arrays.asList(1, 1, 1);
         tracker.addCourse("Math", grades, weights);
-        // This course GPA=2.7
         assertEquals(2.7, tracker.calculateGPA(), 0.01);
+    }
+
+    @Test
+    void testCalculateGPAWithMultipleCourses() {
+        GradeTracker tracker = new GradeTracker();
+
+        // Math: (90+80)/2=85% => B=3.0
+        List<Double> grades1 = Arrays.asList(90.0, 80.0);
+        List<Integer> weights1 = Arrays.asList(1, 1);
+        tracker.addCourse("Math", grades1, weights1);
+
+        // English: (100+100)/2=100% => A+=4.25
+        List<Double> grades2 = Arrays.asList(100.0, 100.0);
+        List<Integer> weights2 = Arrays.asList(1, 1);
+        tracker.addCourse("English", grades2, weights2);
+
+        double expected = (3.0 + 4.25) / 2;
+        assertEquals(expected, tracker.calculateGPA(), 0.001);
     }
 
     @Test
     void testCalculateGPAWithNoCourses() {
         GradeTracker tracker = new GradeTracker();
-        // no courses => GPA=0.0
         assertEquals(0.0, tracker.calculateGPA(), 0.01);
     }
 
@@ -353,7 +387,6 @@ class CombinedTest {
     @Test
     void testGetCoursesWithFewerThanFiveGradesNone() {
         GradeTracker tracker = new GradeTracker();
-        // No courses added => no courses fewer than five
         assertTrue(tracker.getCoursesWithFewerThanFiveGrades().isEmpty());
     }
 
@@ -373,7 +406,6 @@ class CombinedTest {
         List<Double> grades = Arrays.asList(90.0, 80.0, 70.0, 60.0, 50.0);
         List<Integer> weights = Arrays.asList(1, 1, 1, 1, 1);
         tracker.addCourse("Math", grades, weights);
-        // Should be 110.0 as per previous test
         assertEquals(110.0, tracker.calculateRequiredFinalForA("Math"), 0.01);
     }
 

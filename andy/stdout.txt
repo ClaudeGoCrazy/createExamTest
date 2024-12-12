@@ -1,41 +1,33 @@
 Andy v0.28-575d45a (2022-05-03T17:35:52+0200)
 
-Oh, we are facing a failure that we cannot recover from.
-The failure occurred in RunJUnitTestsStep.
-Please, send the message below to the teaching team:
----
-java.util.NoSuchElementException: No value present
-	at java.base/java.util.Optional.get(Optional.java:143)
-	at nl.tudelft.cse1110.andy.utils.ClassUtils.getTestClass(ClassUtils.java:69)
-	at nl.tudelft.cse1110.andy.execution.step.RunJUnitTestsStep.execute(RunJUnitTestsStep.java:32)
-	at nl.tudelft.cse1110.andy.execution.ExecutionFlow.run(ExecutionFlow.java:38)
-	at nl.tudelft.cse1110.andy.Andy.runWithoutSecurity(Andy.java:63)
-	at com.github.cse1110.andy.AndyMojo.execute(AndyMojo.java:86)
-	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:126)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2(MojoExecutor.java:328)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute(MojoExecutor.java:316)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:212)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:174)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.access$000(MojoExecutor.java:75)
-	at org.apache.maven.lifecycle.internal.MojoExecutor$1.run(MojoExecutor.java:162)
-	at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute(DefaultMojosExecutionStrategy.java:39)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:159)
-	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:105)
-	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:73)
-	at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build(SingleThreadedBuilder.java:53)
-	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:118)
-	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:261)
-	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:173)
-	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:101)
-	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:903)
-	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:280)
-	at org.apache.maven.cli.MavenCli.main(MavenCli.java:203)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:255)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:201)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:361)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:314)
-	at org.codehaus.classworlds.Launcher.main(Launcher.java:41)---
+--- Compilation
+Success
+
+--- JUnit execution
+42/42 passed
+
+--- JaCoCo coverage
+Line coverage: 74/76
+Instruction coverage: 379/384
+Branch coverage: 47/48
+Partially covered lines: 30
+Lines not covered: 33, 34
+
+--- Mutation testing
+50/50 killed
+
+--- Code checks
+No code checks to be assessed
+
+--- Meta tests
+0/0 passed
+
+--- Assessment
+Branch coverage: 47/48 (overall weight=0.50)
+Mutation coverage: 50/50 (overall weight=0.50)
+Code checks: 0/0 (overall weight=0.00)
+Meta tests: 0/0 (overall weight=0.00)
+
+Final grade: 99/100
+
+Andy is running in PRACTICE mode and took 6.1 seconds to assess your solution.
